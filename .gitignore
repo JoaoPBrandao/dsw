@@ -28,6 +28,7 @@ jpa-exemplos/target
 # Front-end
 projeto-frontend/node_modules
 projeto-frontend/package-lock.json
+projeto-frontend/.idead
 
 # Back-end
 projeto-backend/.mvn
@@ -38,3 +39,4 @@ projeto-backend/mvnw
 projeto-backend/mvnw.cmd
 projeto-backend/HELP.md
 projeto-backend/src/main/resources/application.properties
+projeto-backend/.idead
