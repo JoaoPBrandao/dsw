@@ -2,7 +2,9 @@
   <div id="app">
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-header">
-        <span class="navbar-brand" href="#">Shared4U</span>
+        <router-link class="link" to="/">
+          <span class="navbar-brand">Shared4U</span>
+        </router-link>
       </div>
 
       <div class="navbar-collapse collapse">
@@ -83,5 +85,8 @@ li.user-commands span.greetings {
 li.user-commands a {
   display: inline;
   padding: 15px 8px;
+}
+.link{
+  cursor: pointer;
 }
 </style>
