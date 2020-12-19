@@ -12,6 +12,15 @@
         <div class="clear"></div>
       </div>
 
+        <div class="row">
+          <div class="col-sm-10">
+            <input class="form-control" v-model="search" type="search">
+          </div>
+          <div class="col-sm-2">
+            <button style="float: right" class="btn btn-primary" @click="processForm()">Buscar</button>
+          </div>
+        </div>
+
       <table class="table table-striped" id="tbItens">
       <thead>
         <tr>
@@ -60,6 +69,7 @@ export default {
       page: 1,
       totalPages: 1,
       items: [],
+      search: "",
 
       httpOptions: {
           baseURL: this.$root.config.url,
@@ -78,7 +88,7 @@ export default {
 
   methods: {
     processForm: function() {
-      axios.get("/api/item/lista?sort=&per_page=10&page=" + this.page, this.httpOptions)
+      axios.get(`/api/item/lista?sort=&per_page=10&filter=${this.search}&page=${this.page}`, this.httpOptions)
         .then(response => {
           this.items = response.data.data.data;
           this.page = response.data.data.current_page;
