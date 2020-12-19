@@ -36,7 +36,7 @@
       </table>
 
       <div>
-        <div class="page-item first" :class="{ disable: this.page == 1 }" @click="moveTo(page-1)">&lt;&lt;</div>
+        <div class="page-item first" :class="{ disable: this.page == 1 }" @click="moveTo(page-1)" @>&lt;&lt;</div>
         <div class="page-item" v-show="page > 3" @click="moveTo(page-3)">{{page-3}}</div>
         <div class="page-item" v-show="page > 2" @click="moveTo(page-2)">{{page-2}}</div>
         <div class="page-item" v-show="page > 1" @click="moveTo(page-1)">{{page-1}}</div>
