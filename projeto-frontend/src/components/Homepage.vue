@@ -3,6 +3,16 @@
     <div class="login">
       <div class="row jumbotron-row">
         <div class="col-md-12">
+          <div v-if="$root.credentials && !this.loading && quantidade > 0" class="row">
+            <div class="col-sm-12">
+              <div class="alert alert-warning" role="alert">
+                Você tem {{quantidade}} compartilhamentos em aberto!
+                <button type="button" @click="quantidade = 0" class="close" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+          </div>
           <div class="jumbotron border text-center">
             <h1>Shared4U</h1>
             <p class="lead">
@@ -13,32 +23,38 @@
               <router-link class="link" :to="{ name: 'login' }">
                 <button class="btn btn-lg btn-primary" role="button">Login</button>
               </router-link>
+              <router-link class="link" :to="{ name: 'create-account' }">
+                <button class="btn btn-lg btn-primary" role="button">Cadastro</button>
+              </router-link>
             </p>
           </div>
         </div>
       </div>
   
-      <div class="row marketing">
-        <div class="col-md-6">
-          <h4>Subheading</h4>
-          <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum. Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-
-          <h4>Subheading</h4>
-          <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-          <h4>Subheading</h4>
-          <p>Maecenas sed diam eget risus varius blandit sit amet non magna, consectetur ac, vestibulum at eros. Maecenas sed diam eget risus varius blandit sit amet non magna, consectetur ac, vestibulum at eros. Maecenas sed diam eget risus varius blandit sit amet non magna, consectetur ac, vestibulum at eros. </p>
+      <div class="row marketing text-center">
+        <div class="col-md-4">
+          <img width="70px" height="70px" src="../assets/clock.svg">
+          <h3>Rápido</h3>
+          <p>
+            Você só precisa criar uma conta, e já pode começar a compartilhar seus itens!
+          </p>
         </div>
 
-        <div class="col-md-6">
-          <h4>Subheading</h4>
-          <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum. Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-
-          <h4>Subheading</h4>
-          <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-          <h4>Subheading</h4>
-          <p>Maecenas sed diam eget risus varius blandit sit amet non magna, consectetur ac, vestibulum at eros. Maecenas sed diam eget risus varius blandit sit amet non magna, consectetur ac, vestibulum at eros. Maecenas sed diam eget risus varius blandit sit amet non magna, consectetur ac, vestibulum at eros. </p>
+        <div class="col-md-4">
+          <img width="70px" height="70px" src="../assets/easy-use.svg">
+          <h3>Fácil</h3>
+          <p>
+            Após criar uma conta, você só precisa cadastrar seu item, inserindo nome e descrição, e pode começar a
+            compartilhar com outros usuários.
+          </p>
+        </div>
+        <div class="col-md-4">
+          <img width="70px" height="70px" src="../assets/shield.svg">
+          <h3>Seguro</h3>
+          <p>
+            Nossa plataforma conta com verificações de segurança para garantir que você não será prejudicado por
+            atitudes maliciosas de outros usuários.
+          </p>
         </div>
       </div>
     </div>
@@ -54,7 +70,37 @@
 </template>
 
 <script>
+  import axios from 'axios';
+
   export default {
+    data() {
+      return {
+        quantidade: 0,
+        loading: false,
+        httpOptions: {
+          baseURL: this.$root.config.url,
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.$root.credentials.token
+          }
+        }
+      }
+    },
+    mounted(){
+      if(this.$root.credentials){
+        this.loading = true;
+        axios.get(`/api/compartilhamento/quantidadeAberto`, this.httpOptions)
+        .then(response => {
+          this.loading = false;
+          this.quantidade = response.data.data;
+        })
+        .catch(err => {
+          this.loading = false;
+          console.log(err);
+        })
+      }
+    }
   }
 </script>
 

@@ -3,6 +3,10 @@ h2.form-title {
     color: #36c;
 }
 
+body {
+    word-break: break-word;
+}
+
 h6.form-subtitle {
     margin-bottom: 32px;
     color: #777;
@@ -16,4 +20,19 @@ h6.form-subtitle {
 }
 .link {
     cursor: pointer
+}
+table {
+    table-layout: fixed;
+}
+::-webkit-scrollbar {
+    width: 7px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+    background: #337ab7;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #286090;
 }

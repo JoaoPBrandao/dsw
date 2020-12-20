@@ -16,7 +16,7 @@
           <div class="col-sm-11">
             <div class="btn-group">
               <input id="searchinput" v-model="search" type="search" class="form-control">
-              <span @click="search = ''" id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
+              <span @click="() => {search = ''; processForm()}" id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
             </div>
           </div>
           <div class="col-sm-1">
@@ -24,7 +24,7 @@
           </div>
         </div>
 
-      <table class="table table-striped" id="tbItens">
+      <table class="table table-striped table-hover" id="tbItens">
       <thead>
         <tr>
           <th>Nome</th>
@@ -74,6 +74,7 @@ export default {
       totalPages: 1,
       items: [],
       search: "",
+      errors: null,
 
       httpOptions: {
           baseURL: this.$root.config.url,
@@ -97,18 +98,18 @@ export default {
           this.items = response.data.data.data;
           this.page = response.data.data.current_page;
           this.totalPages = response.data.data.last_page;
-          this.error = {};
+          this.errors = null;
         })
         .catch(error => {
-          this.error = error.response.data.errors;
+          this.errors = error.response.data.errors;
         });
     },
 
     moveTo: function(page) {
-      if (page < 1) 
+      if (page < 1)
         page = 1;
 
-      if (page > this.totalPages) 
+      if (page > this.totalPages)
         page = this.totalPages;
 
       this.page = page;

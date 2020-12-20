@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import br.unirio.dsw.compartilhador.api.model.ItemCompartilhado;
 import br.unirio.dsw.compartilhador.api.model.TipoItemCompartilhado;
+import br.unirio.dsw.compartilhador.api.utils.spring.PageDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +105,83 @@ public class CompartilhamentoController
         return ControllerResponse.success(result);
     }
 
+    /**
+     * Ação que lista os Compartilhamentos recebidos por um usuário
+     */
+    @GetMapping(value = "/listaUsuario")
+    public ResponseEntity<ResponseData> listUsuario(@RequestParam int page, @RequestParam int per_page, @RequestParam String filter)
+    {
+
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (email == null)
+            return ControllerResponse.fail("Não há um usuário logado no sistema.");
+
+        Usuario usuario = usuarioRepositorio.findByEmail(email);
+
+        if (usuario == null)
+            return ControllerResponse.fail("Não foi possível recuperar os dados do usuário a partir das credenciais.");
+
+        log.info("Listando compartilhamentos do usuario: " + usuario.getNome());
+
+        Pageable pageable = PageRequest.of(page-1, per_page);
+        Page<Compartilhamento> compartilhamentos;
+        if(filter.equals("")){
+            compartilhamentos = compartilhamentoRepositorio.findByUsuarioId(usuario.getId(), pageable);
+        }else{
+            compartilhamentos = compartilhamentoRepositorio.findByUsuarioId(usuario.getId(), pageable, filter);
+        }
+
+        PageDTO<CompartilhamentoDTO> result = new PageDTO<CompartilhamentoDTO>(compartilhamentos.getTotalElements(), page, per_page);
+
+        compartilhamentos.forEach(compartilhamento -> {
+            CompartilhamentoDTO dto = new CompartilhamentoDTO();
+            dto.setId(compartilhamento.getId());
+            dto.setUsuario_nome(compartilhamento.getItem().getUsuario().getNome());
+            dto.setData_inicio(compartilhamento.getDataInicio());
+            dto.setItem_nome(compartilhamento.getItem().getNome());
+            dto.setData_termino(compartilhamento.getDataTermino());
+            if(compartilhamento.isCanceladoDono()){
+                dto.setStatus("Cancelado pelo dono");
+            }else if(compartilhamento.isCanceladoUsuario()){
+                dto.setStatus("Cancelado pelo usuário");
+            }else if(compartilhamento.isRejeitado()){
+                dto.setStatus("Rejeitado");
+            }else if(compartilhamento.isAceito()){
+                dto.setStatus("Aceito");
+            }else{
+                dto.setStatus("Aberto");
+            }
+            result.add(dto);
+        });
+
+        return ControllerResponse.success(result);
+    }
+
+    /**
+     * Ação que retorna quantos compartilhamentos abertos um usuário tem
+     */
+    @GetMapping(value = "/quantidadeAberto")
+    public ResponseEntity<ResponseData> quantidadeAberto()
+    {
+
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (email == null)
+            return ControllerResponse.fail("Não há um usuário logado no sistema.");
+
+        Usuario usuario = usuarioRepositorio.findByEmail(email);
+
+        if (usuario == null)
+            return ControllerResponse.fail("Não foi possível recuperar os dados do usuário a partir das credenciais.");
+
+        log.info("Contando compartilhamentos abertos: " + usuario.getNome());
+
+        long quantidade = compartilhamentoRepositorio.findByUsuarioIdAndAberto(usuario.getId());
+
+        return ControllerResponse.success(quantidade);
+    }
+
     @PutMapping(value = "/novo")
     public ResponseEntity<ResponseData> novo(@RequestBody NovoCompartilhamentoForm form, BindingResult result)
     {
@@ -140,6 +218,76 @@ public class CompartilhamentoController
         compartilhamento.setDataInicio(form.getDataInicio());
         compartilhamento.setDataTermino(form.getDataTermino());
         compartilhamento.setItem(item);
+        compartilhamentoRepositorio.save(compartilhamento);
+        return ControllerResponse.success();
+    }
+
+    /**
+     * Ação que aceita um compartilhamento
+     */
+    @PostMapping(value = "/aceitar/{id}")
+    public ResponseEntity<ResponseData> aceita(@PathVariable("id") long id)
+    {
+        log.info("Aceitando um compartilhamento: ", id);
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (email == null)
+            return ControllerResponse.fail("nome", "Não há um usuário logado no sistema.");
+
+        Usuario usuario = usuarioRepositorio.findByEmail(email);
+
+        if (usuario == null)
+            return ControllerResponse.fail("nome", "Não foi possível recuperar os dados do usuário a partir das credenciais.");
+
+        Compartilhamento compartilhamento = compartilhamentoRepositorio.findByCompartilhamentoId(id);
+
+        if (compartilhamento == null)
+            return ControllerResponse.fail("message", "O compartilhamento não foi encontrado.");
+
+        if (compartilhamento.isCanceladoDono() || compartilhamento.isCanceladoUsuario() || compartilhamento.isAceito() || compartilhamento.isRejeitado())
+            return ControllerResponse.fail("message", "Status inválido.");
+
+        if (compartilhamento.getUsuario().getId() != usuario.getId())
+            return ControllerResponse.fail("message", "Você não tem permissão para isso.");
+
+        compartilhamento.setAceito(true);
+        compartilhamentoRepositorio.save(compartilhamento);
+        return ControllerResponse.success();
+    }
+
+    /**
+     * Ação que rejeita um compartilhamento
+     */
+    @PostMapping(value = "/rejeitar/{id}")
+    public ResponseEntity<ResponseData> rejeita(@PathVariable("id") long id)
+    {
+        log.info("Rejeitando um compartilhamento: ", id);
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (email == null)
+            return ControllerResponse.fail("nome", "Não há um usuário logado no sistema.");
+
+        Usuario usuario = usuarioRepositorio.findByEmail(email);
+
+        if (usuario == null)
+            return ControllerResponse.fail("nome", "Não foi possível recuperar os dados do usuário a partir das credenciais.");
+
+        Compartilhamento compartilhamento = compartilhamentoRepositorio.findByCompartilhamentoId(id);
+
+        if (compartilhamento == null)
+            return ControllerResponse.fail("message", "O compartilhamento não foi encontrado.");
+
+        if (compartilhamento.isCanceladoDono() || compartilhamento.isCanceladoUsuario() || compartilhamento.isRejeitado())
+            return ControllerResponse.fail("message", "Status inválido.");
+
+        if (compartilhamento.getUsuario().getId() != usuario.getId())
+            return ControllerResponse.fail("message", "Você não tem permissão para isso.");
+
+        if (compartilhamento.isAceito()){
+            compartilhamento.setCanceladoUsuario(true);
+        }else{
+            compartilhamento.setRejeitado(true);
+        }
         compartilhamentoRepositorio.save(compartilhamento);
         return ControllerResponse.success();
     }
@@ -197,6 +345,8 @@ public class CompartilhamentoController
     private LocalDate data_termino;
 
     private String status;
+
+    private String item_nome;
 }
 
 /**

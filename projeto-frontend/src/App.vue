@@ -16,17 +16,23 @@
                 Itens
               </router-link>
             </li>
+            <li v-if="$root.credentials">
+              <router-link class="link" :to="{ name: 'compartilhamento-list' }">
+                <i class="fas fa-address-book"></i>
+                Compartilhamentos recebidos
+              </router-link>
+            </li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
             <li class="user-commands" v-if="$root.credentials">
-              <span class="greetings">Olá {{$root.credentials.nome}}.</span> |
-              <router-link class="link" :to="{ name: 'change-password' }" replace>Troca senha</router-link> |
+              <span class="greetings">Olá, {{$root.credentials.nome}}</span>
+              <router-link class="link" :to="{ name: 'change-password' }" replace>Troca senha</router-link>
               <a class="link" @click="logout">Logout</a>
             </li>
 
             <li class="login-commands" v-if="!$root.credentials">
-              <router-link class="link" :to="{ name: 'login' }">Login</router-link> |
+              <router-link class="link" :to="{ name: 'login' }">Login</router-link>
               <router-link class="link" :to="{ name: 'create-account' }">Criar conta</router-link>
             </li>
           </ul>
@@ -58,7 +64,7 @@
 <style>
 #app {
   font-family: Helvetica, Arial, sans-serif;
-  margin-top: 60px;
+  padding-top: 60px;
 }
 span.greetings {
   color: white;

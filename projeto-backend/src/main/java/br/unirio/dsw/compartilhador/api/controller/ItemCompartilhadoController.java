@@ -69,7 +69,7 @@ public class ItemCompartilhadoController
 
 		Pageable pageable = PageRequest.of(page-1, per_page);
 		Page<ItemCompartilhado> itens;
-		if(filter==""){
+		if(filter.equals("")){
 			itens = itemRepositorio.findByUsuarioId(usuario.getId(), pageable);
 		}else{
 			itens = itemRepositorio.findByUsuarioId(usuario.getId(), pageable, filter);

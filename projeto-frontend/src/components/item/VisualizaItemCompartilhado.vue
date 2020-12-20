@@ -24,9 +24,6 @@
                         <button data-toggle="modal" data-target="#modalCompartilhar" class="btn btn-primary">Compartilhar</button>
                     </div>
                 </div>
-                <div>
-                    <RouterLink to="/item/list"><button class="btn btn-primary">Voltar</button></RouterLink>
-                </div>
             </div>
             <div class="col-sm-8 text-center">
                 <div class="panel panel-primary">
@@ -34,7 +31,7 @@
                         Próximos Compartilhamentos
                     </h2>
                     <div style="padding: 0px 10px">
-                        <table class="table table-striped table-hover" id="tbCompartilhamentos">
+                        <table v-if="compartilhamentos.length > 0" class="table table-striped table-hover" id="tbCompartilhamentos">
                             <thead>
                             <tr>
                                 <th>Início</th>
@@ -57,6 +54,7 @@
                             </tr>
                             </tbody>
                         </table>
+                        <h3 style="margin-bottom: 5px" v-if="compartilhamentos.length == 0">Não há nenhum compartilhamento futuro aceito ou aberto.</h3>
                     </div>
                 </div>
             </div>
@@ -216,7 +214,7 @@
                             let d1 = Date.parse(compartilhamento.data_termino);
                             let d2 = Date.now();
                             console.log(compartilhamento.usuario);
-                            return d1 > d2;
+                            return d1 > d2 && (compartilhamento.status == "Aberto" || compartilhamento.status == "Aceito") ;
                         })
                     })
                     .catch(err => {
@@ -262,6 +260,5 @@
     .modal-footer .alert {
         text-align: left;
     }
-    .alert {
-    }
+
 </style>

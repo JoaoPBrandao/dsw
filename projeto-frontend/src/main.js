@@ -26,6 +26,9 @@ import AtualizaItemCompartilhado from './components/item/AtualizaItemCompartilha
 import RemoveItemCompartilhado from './components/item/RemoveItemCompartilhado.vue'
 import VisualizaItemCompartilhado from "./components/item/VisualizaItemCompartilhado";
 
+/* Compartilhamentos */
+import ListaCompartilhamento from "./components/ListaCompartilhamento";
+
 Vue.use(Router)
 
 const router = new Router({
@@ -85,6 +88,11 @@ const router = new Router({
     path: '/item/list',
     name: 'item-list',
     component: ListaItemCompartilhado,
+  },
+  {
+    path: '/compartilhamento/list',
+    name: 'compartilhamento-list',
+    component: ListaCompartilhamento,
   },
   {
     path: '/item/update',

@@ -20,6 +20,10 @@ import br.unirio.dsw.compartilhador.api.model.Compartilhamento;
 })
 public interface CompartilhamentoRepository extends JpaRepository<Compartilhamento, Long>
 {
+	@Query("SELECT COUNT(c) FROM Compartilhamento c WHERE " +
+			"c.canceladoDono = false AND c.canceladoUsuario = false AND c.aceito = false AND c.rejeitado = false")
+	long findByUsuarioIdAndAberto(Long usuarioId);
+
 	List<Compartilhamento> findByUsuarioId(Long usuarioId);
 
 	@Query("SELECT c FROM Compartilhamento c WHERE c.item.id = :itemId")
@@ -28,7 +32,12 @@ public interface CompartilhamentoRepository extends JpaRepository<Compartilhamen
 	@Query("SELECT c FROM Compartilhamento c WHERE c.id = :id")
 	Compartilhamento findByCompartilhamentoId(@Param("id") Long id);
 
-	Page<Compartilhamento> findByUsuarioId(Long usuarioId, Pageable pageable);
+	@Query("SELECT c FROM Compartilhamento c WHERE c.usuario.id = :usuarioId AND c.canceladoUsuario = false AND c.canceladoDono = false AND c.rejeitado = false ")
+	Page<Compartilhamento> findByUsuarioId(@Param("usuarioId") Long usuarioId, Pageable pageable);
+
+	@Query("SELECT c FROM Compartilhamento c WHERE c.usuario.id = :usuarioId  AND c.canceladoUsuario = false AND c.canceladoDono = false AND c.rejeitado = false " +
+			"AND (c.item.nome LIKE %:filter% OR c.item.usuario.nome LIKE %:filter%)")
+	Page<Compartilhamento> findByUsuarioId(@Param("usuarioId") Long usuarioId, Pageable pageable, @Param("filter") String filter);
 
 	List<Compartilhamento> findByUsuarioIdAndAceito(Long usuarioId, boolean aceito);
 }

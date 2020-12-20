@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="remove-items-compartilhados row" v-if="this.$root.credentials">
-    <div class="col-md-10 col-md-offset-1 text-left">
+    <div class="col-md-12 text-center">
       <h2 class="form-title">Remoção de item compartilhado</h2>
       <h6 class="form-subtitle">Confirme a remoção do item compartilhado.</h6>
 
@@ -90,7 +90,6 @@ div.error {
 p.label {
   color: black;
   font-weight: bold;
-  text-align: left;
   display: block;
   font-size: 100%;
   padding: 0px 0px 0px 0px;
@@ -98,5 +97,8 @@ p.label {
 }
 p.text {
   margin-bottom: 32px;
+}
+.form-subtitle{
+  text-align: center !important;
 }
 </style>
