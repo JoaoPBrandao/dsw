@@ -202,6 +202,7 @@
                 .then(response => {
                     this.success = true;
                     this.errors = null;
+                    this.updateList();
                 })
                 .catch(err => {
                     this.errors = err.response.data.errors;
