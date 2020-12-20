@@ -114,7 +114,7 @@ public class ItemCompartilhadoController
 		
 		ItemCompartilhado itemAnterior = itemRepositorio.findByNomeAndUsuarioId(form.getNome(), usuario.getId());
 		
-		if (itemAnterior != null)
+		if (itemAnterior != null  && !itemAnterior.isRemovido())
 			return ControllerResponse.fail("nome", "Já existe um item compartilhado registrado com este nome no sistema.");
 
 		if (form.getDescricao().length() == 0)
