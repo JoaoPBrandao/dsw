@@ -36,9 +36,10 @@
           <td>{{item.nome}}</td>
           <td>{{item.descricao}}</td>
           <td>{{item.tipo}}</td>
-          <td>
-            <span class="glyphicon glyphicon-pencil" aria-hidden="true" @click="edita(item)"></span>
-            <span class="glyphicon glyphicon-remove" aria-hidden="true" @click="remove(item)"></span>
+          <td style="width: fit-content">
+            <RouterLink class="glyphicon glyphicon-eye-open link" :to="{name: 'item-view', params: {item: item}}" />
+            <RouterLink class="glyphicon glyphicon-pencil link" :to="{name: 'item-update', params: {item: item}}" />
+            <RouterLink class="glyphicon glyphicon-remove link" :to="{name: 'item-delete', params: {item: item}}" />
           </td>
         </tr>
       </tbody>
@@ -113,20 +114,6 @@ export default {
 
     novo: function() {
       this.$router.push({ name: 'item-new' });
-    },
-
-    edita: function(item) {
-      this.$router.push({
-          name: 'item-update',
-          params: { item: item }
-      });
-    },
-
-    remove: function(item) {
-      this.$router.push({
-          name: 'item-delete',
-          params: { item: item }
-      });
     }
   }
 }
@@ -137,7 +124,7 @@ div.lista-items-compartilhados {
   margin-top: 32px;
 }
 th.commands {
-  width: 48px;
+  width: 72px;
 }
 div.page-item {
   color: #2973b7;

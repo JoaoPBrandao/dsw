@@ -13,13 +13,13 @@
       </div>
 
       <div>
-        <p class="label">Nome</label>
+        <p class="label">Nome</p>
         <p class="text" >{{item.nome}}</p>
 
-        <p class="label">Descrição</label>
+        <p class="label">Descrição</p>
         <p class="text" >{{item.descricao}}</p>
 
-        <p class="label">Tipo</label>
+        <p class="label">Tipo</p>
         <p class="text" >{{item.tipo}}</p>
 
         <button type="submit" class="btn btn-danger" @click="remove">Remover o item</button>

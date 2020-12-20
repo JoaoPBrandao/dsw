@@ -23,6 +23,9 @@ public interface ItemCompartilhadoRepository extends JpaRepository<ItemCompartil
 
 	ItemCompartilhado findByNomeAndUsuarioId(String nome, Long id);
 
+	@Query("SELECT ic FROM ItemCompartilhado ic WHERE ic.id = :itemId")
+	ItemCompartilhado findByItemId(@Param("itemId") Long itemId);
+
 	@Query("SELECT ic FROM ItemCompartilhado ic WHERE ic.usuario.id = :ownerId AND ic.removido = 0") 
 	List<ItemCompartilhado> findByUsuarioId(@Param("ownerId") Long ownerId);
 

@@ -169,6 +169,10 @@ public class Compartilhamento implements Serializable
     @PrePersist
     public void prePersist() 
     {
-        dataRegistro = dataAtualizacao = new Date();
+    	dataRegistro = dataAtualizacao = new Date();
+    	aceito = false;
+    	rejeitado = false;
+    	canceladoDono = false;
+    	canceladoUsuario = false;
     }
 }
