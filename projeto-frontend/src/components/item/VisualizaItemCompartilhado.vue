@@ -1,47 +1,72 @@
 <template>
-    <div class="container">
-        <h1>Visualizar Item</h1>
+    <div>
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-4 text-left">
+                <div class="panel panel-primary">
+                    <h2 class="panel-heading">
+                        Visualizar Item
+                    </h2>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <h3>Nome</h3>
+                            <p>{{item.nome}}</p>
+                        </li>
+                        <li class="list-group-item">
+                            <h3>Descrição</h3>
+                            <p>{{item.descricao}}</p>
+                        </li>
+                        <li class="list-group-item">
+                            <h3>Tipo</h3>
+                            <p>{{item.tipo}}</p>
+                        </li>
+                    </ul>
+                    <div class="panel-footer">
+                        <button data-toggle="modal" data-target="#modalCompartilhar" class="btn btn-primary">Compartilhar</button>
+                    </div>
+                </div>
                 <div>
-                    <h3>Nome</h3>
-                    <p class="text" >{{item.nome}}</p>
-
-                    <h3>Descrição</h3>
-                    <p class="text" >{{item.descricao}}</p>
-
-                    <h3>Tipo</h3>
-                    <p class="text" >{{item.tipo}}</p>
-
-                    <button data-toggle="modal" data-target="#modalCompartilhar" class="btn btn-primary">Compartilhar</button>
-
                     <RouterLink to="/item/list"><button class="btn btn-primary">Voltar</button></RouterLink>
                 </div>
             </div>
-            <div class="col-sm-8">
-                <table class="table table-striped" id="tbCompartilhamentos">
-                    <thead>
-                    <tr>
-                        <th>Início</th>
-                        <th>Término</th>
-                        <th>Usuário</th>
-                        <th>Status</th>
-                        <th class="commands"></th>
-                    </tr>
-                    </thead>
+            <div class="col-sm-8 text-center">
+                <div class="panel panel-primary">
+                    <h2 class="panel-heading">
+                        Próximos Compartilhamentos
+                    </h2>
+                    <div style="padding: 0px 10px">
+                        <table class="table table-striped table-hover" id="tbCompartilhamentos">
+                            <thead>
+                            <tr>
+                                <th>Início</th>
+                                <th>Término</th>
+                                <th>Usuário</th>
+                                <th>Status</th>
+                                <th class="commands"></th>
+                            </tr>
+                            </thead>
 
-                    <tbody>
-                    <tr v-for="compartilhamento in compartilhamentos">
-                        <td>{{compartilhamento.data_inicio}}</td>
-                        <td>{{compartilhamento.data_termino}}</td>
-                        <td>{{compartilhamento.usuario_nome}}</td>
-                        <td>{{compartilhamento.status}}</td>
-                        <td>
-                            <span @click="compartilhamentoSelecionado=compartilhamento.id"  data-toggle="modal" data-target="#modalCancelar" class="glyphicon glyphicon-remove link"></span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                            <tbody>
+                            <tr v-for="compartilhamento in compartilhamentos">
+                                <td>{{compartilhamento.data_inicio}}</td>
+                                <td>{{compartilhamento.data_termino}}</td>
+                                <td>{{compartilhamento.usuario_nome}}</td>
+                                <td>{{compartilhamento.status}}</td>
+                                <td>
+                                    <a @click="compartilhamentoSelecionado=compartilhamento.id"  data-toggle="modal" data-target="#modalCancelar" class="glyphicon glyphicon-remove link"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-sm-8">
+
             </div>
         </div>
 
@@ -80,20 +105,21 @@
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Compartilhar</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <div v-if="success" class="alert alert-success" role="alert">
+                            Compartilhamento registrado com sucesso!
+                            <button type="button" @click="success = false" class="close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div v-if="errors" class="alert alert-danger" role="alert">
+                            Erro ao registrar compartilhamento: {{errors.message}}
+                            <button type="button" @click="errors = null" class="close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                     </div>
                     </form>
-                    <div v-if="success" class="alert alert-success" role="alert">
-                        Compartilhamento registrado com sucesso!
-                        <button type="button" @click="success = false" class="close" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div v-if="errors" class="alert alert-danger" role="alert">
-                        Erro ao registrar compartilhamento: {{errors.message}}
-                        <button type="button" @click="errors = null" class="close" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -115,13 +141,13 @@
                         <button @click="cancelarCompartilhamento" class="btn btn-danger">Sim</button>
                         <button class="btn btn-primary" data-dismiss="modal">Não</button>
                         <div v-if="success" class="alert alert-success" role="alert">
-                            Compartilhamento registrado com sucesso!
+                            Compartilhamento cancelado com sucesso!
                             <button type="button" @click="success = false" class="close" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div v-if="errors" class="alert alert-danger" role="alert">
-                            Erro ao registrar compartilhamento: {{errors.message}}
+                            Erro ao cancelar compartilhamento: {{errors.message}}
                             <button type="button" @click="errors = null" class="close" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -216,5 +242,26 @@
 <style scoped>
     th.commands {
         width: 24px;
+    }
+    .row {
+        margin-top: 25px;
+    }
+    th {
+        text-align: center;
+    }
+    td {
+        text-align: center;
+    }
+    .alert {
+        margin-top: 10px;
+        margin-bottom: 0px !important;
+    }
+    .modal h2 {
+        display: inline-block;
+    }
+    .modal-footer .alert {
+        text-align: left;
+    }
+    .alert {
     }
 </style>

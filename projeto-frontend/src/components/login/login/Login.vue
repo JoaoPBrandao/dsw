@@ -16,7 +16,7 @@
           <input type="password" class="form-control" id="password" placeholder="Entre e sua senha" v-model="form.senha">
         </div>
 
-        <button type="submit" class="btn btn-primary">Envia</button>
+        <button type="submit" class="btn btn-primary">Enviar</button>
       </form>
 
       <div class="link-recuperar-senha">

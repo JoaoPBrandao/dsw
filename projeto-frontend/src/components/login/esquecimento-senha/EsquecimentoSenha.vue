@@ -11,7 +11,7 @@
           <span class="error" v-if="error.email">{{error.email}}</span>
         </div>
 
-        <button type="submit" class="btn btn-primary">Envia</button>
+        <button type="submit" class="btn btn-primary">Enviar</button>
       </form>
 
       <div class="link-login">

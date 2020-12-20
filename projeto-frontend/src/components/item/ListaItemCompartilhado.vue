@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="lista-items-compartilhados row" v-if="this.$root.credentials">
-    <div class="col-md-10 col-md-offset-1 text-left">
+    <div class="col-md-12 text-left">
       <div>
         <div class="header">
           <h2 class="form-title">Itens Compartilhados</h2>
@@ -13,10 +13,13 @@
       </div>
 
         <div class="row">
-          <div class="col-sm-10">
-            <input class="form-control" v-model="search" type="search">
+          <div class="col-sm-11">
+            <div class="btn-group">
+              <input id="searchinput" v-model="search" type="search" class="form-control">
+              <span @click="search = ''" id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
+            </div>
           </div>
-          <div class="col-sm-2">
+          <div class="col-sm-1">
             <button style="float: right" class="btn btn-primary" @click="processForm()">Buscar</button>
           </div>
         </div>
@@ -159,5 +162,22 @@ div.header {
 div.new-button {
   float: right;
   text-align: right;
+}
+#searchinput {
+  width: 100%;
+}
+.btn-group {
+  width: 100%;
+}
+#searchclear {
+  position: absolute;
+  right: 5px;
+  top: 0;
+  bottom: 0;
+  height: 14px;
+  margin: auto;
+  font-size: 14px;
+  cursor: pointer;
+  color: #ccc;
 }
 </style>

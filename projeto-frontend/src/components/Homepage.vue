@@ -2,14 +2,16 @@
   <div>
     <div class="login">
       <div class="row jumbotron-row">
-        <div class="col-md-offset-1 col-md-10">
-          <div class="jumbotron text-center">
-            <h1>Jumbotron heading</h1>
-            <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+        <div class="col-md-12">
+          <div class="jumbotron border text-center">
+            <h1>Shared4U</h1>
+            <p class="lead">
+              Comece a compartilhar seus itens hoje mesmo!
+            </p>
 
             <p v-if="!$root.credentials">
               <router-link class="link" :to="{ name: 'login' }">
-                <a class="btn btn-lg btn-success" href="#" role="button">Login</a>
+                <button class="btn btn-lg btn-primary" role="button">Login</button>
               </router-link>
             </p>
           </div>
@@ -17,7 +19,7 @@
       </div>
   
       <div class="row marketing">
-        <div class="col-md-offset-1 col-md-4">
+        <div class="col-md-6">
           <h4>Subheading</h4>
           <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum. Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
 
@@ -28,7 +30,7 @@
           <p>Maecenas sed diam eget risus varius blandit sit amet non magna, consectetur ac, vestibulum at eros. Maecenas sed diam eget risus varius blandit sit amet non magna, consectetur ac, vestibulum at eros. Maecenas sed diam eget risus varius blandit sit amet non magna, consectetur ac, vestibulum at eros. </p>
         </div>
 
-        <div class="col-md-offset-2 col-md-4">
+        <div class="col-md-6">
           <h4>Subheading</h4>
           <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum. Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
 
@@ -42,7 +44,7 @@
     </div>
 
     <div class="row footer-row">
-      <div class="col-md-offset-1 col-md-10">
+      <div class="col-md-12">
         <div class="footer">
           <p>©2020 UNIRIO, Universidade Federal do Estado do Rio de Janeiro</p>
         </div>
@@ -70,4 +72,9 @@ div.jumbotron-row {
     color: #777;
     border-top: 1px solid #e5e5e5;
 }
+  .jumbotron {
+    background-image: url("https://i.imgur.com/k8v5IIo.jpg");
+    background-size: cover;
+    border: 1px outset #a2a2a2;
+  }
 </style>

@@ -29,7 +29,7 @@
           <span class="error" v-if="error.senhaRepetida">{{error.senhaRepetida}}</span>
         </div>
 
-        <button type="submit" class="btn btn-primary">Cria conta</button>
+        <button type="submit" class="btn btn-primary">Criar conta</button>
       </form>
 
       <div class="link-login">
